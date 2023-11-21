@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LittleBigConnectionExportPDF
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  Ajoute une fonctionnalité d'export PDF à la page de détail d'un AO
 // @author       mdel ndem
 // @match        https://www.littlebigconnection.com/request-for-proposal/*
@@ -66,8 +66,11 @@ $(document).ready(function() {
         var newWidth = (imgCmWidthConverted * goodRatio) - (2 * margin);
         var newHeight = (imgCmHeightConverted * goodRatio) - (2 * margin);
         doc.addImage(imgData, 'PNG', margin, margin, newWidth, newHeight);
-        var title = $("#rfp-id").text().trim();
-        doc.save(title + '.pdf');
+        var jobId = $("#rfp-id").text().trim();
+        //var jobLabel = $("#wrapper-header h1.wrapper__title").text().trim().replace(/\s+/g, "-");
+        var jobLabel = $("#wrapper-header h1.wrapper__title").text().trim();
+        var customer = $("#rfp-id").next("span").text().replace("pour","").trim().replace(/\s+/g, "-");
+        doc.save(jobLabel + "_" + customer + "_" + jobId + '.pdf');
         $('#wrapper_content').html(original_content);
       });
   });
